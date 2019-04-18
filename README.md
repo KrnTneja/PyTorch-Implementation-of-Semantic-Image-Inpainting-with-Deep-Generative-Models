@@ -2,6 +2,7 @@
 
 PyTorch Implementation of Semantic Image Inpainting with Deep Generative Models (http://openaccess.thecvf.com/content_cvpr_2017/papers/Yeh_Semantic_Image_Inpainting_CVPR_2017_paper.pdf)
 
+
 Details:
 1. 100-d input random vector
 2. DC GAN
@@ -14,13 +15,13 @@ Details:
 
 
 TODO:
-1. Implement GAN 
+1. (done) Implement GAN 
 2. Prepare datasets
-3. Loss function for GAN and training
-4. Implement backprop to input
-5. Loss function for backprop to input
-6. Random patches dataset
-7. Weighted mask
+3. (done) Loss function for GAN and training script 
+4. (done) Implement backprop to input 
+5. (done) Loss function for backprop to input 
+6. (done) Random patches dataset
+7. (done) Weighted mask
 8. Poisson blending
 
 
