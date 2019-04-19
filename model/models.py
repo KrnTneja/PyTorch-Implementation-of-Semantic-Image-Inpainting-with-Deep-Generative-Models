@@ -17,15 +17,6 @@ from skimage import transform
 # import glob
 # import os
 
-import fft
-import subsample
-
-class MRINet(nn.Module):
-    def __init__(self, num_t_parts=12):
-        super(MRINet, self).__init__()
-
-    def forward(self, inputs): 
-        return outputs
 
 # Generator and discrimintor from following repository: https://github.com/eriklindernoren/PyTorch-GAN
 class Generator(nn.Module):
@@ -74,14 +65,13 @@ class Discriminator(nn.Module):
         )
 
         # The height and width of downsampled image
-        ds_size = args.img_size // 2 ** 4
-        self.adv_layer = nn.Sequential(nn.Linear(128 * ds_size ** 2, 1), nn.Sigmoid())
+        self.ds_size = args.img_size // 2 ** 4
+        self.adv_layer = nn.Sequential(nn.Linear(128 * self.ds_size ** 2, 1), nn.Sigmoid())
 
     def forward(self, img):
         out = self.model(img)
         out = out.view(out.shape[0], -1)
         validity = self.adv_layer(out)
-
         return validity
 
 

@@ -16,7 +16,7 @@ Details:
 
 TODO:
 1. (done) Implement GAN 
-2. Prepare datasets
+2. (done) Prepare datasets
 3. (done) Loss function for GAN and training script 
 4. (done) Implement backprop to input 
 5. (done) Loss function for backprop to input 
