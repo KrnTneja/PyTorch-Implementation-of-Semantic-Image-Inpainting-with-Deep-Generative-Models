@@ -1,7 +1,7 @@
 import torch
 from torch.utils.data import Dataset 
+
 from skimage import transform
-from scipy.io import loadmat
 import skimage.io as io
 import numpy as np
 
@@ -9,11 +9,10 @@ import glob
 import os
 
 class MRIImages(Dataset):
-    def __init__(self, directory, image_size=(96,96), transform=None):
+    def __init__(self, directory, image_size=(96,96)):
         self.directory = directory
         self.images_filename = glob.glob(os.path.join(directory, "*.png"))
         self.image_size = image_size
-        self.transform = transform
 
     def __len__(self):
         return len(self.images_filename)
@@ -26,7 +25,7 @@ class MRIImages(Dataset):
         return torch.FloatTensor(target_image)
 
 def weighted_mask(mask,window_size):
-    assert len(mask.shape) == 2 # 3d input, 0th: batch
+    assert len(mask.shape) == 2 
     assert window_size % 2 == 1 # odd window size
     max_shift = window_size//2
     output = np.zeros_like(mask)
@@ -42,7 +41,6 @@ class RandomPatchDataset(Dataset):
         self.directory = directory
         self.images_filename = glob.glob(os.path.join(directory, "*.png"))
         self.image_size = image_size
-        self.transform = transform
         self.weighted_mask = weighted_mask
         self.window_size = window_size
 

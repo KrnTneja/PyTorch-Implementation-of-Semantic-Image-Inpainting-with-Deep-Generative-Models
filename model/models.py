@@ -1,24 +1,7 @@
-import torch
-# from torch.utils.data import Dataset, DataLoader
 import torch.nn as nn
-import torch.nn.functional as F
-# import torch.optim as optim
 
-# from PIL import Image
-# import matplotlib.pyplot as plt
-# from skimage import io, transform
-from skimage import transform
-# import numpy as np
+# Generator and discrimintor adapted from following repository: https://github.com/eriklindernoren/PyTorch-GAN
 
-# import torchvision.transforms as transforms
-# import torchvision.models as models
-
-# import copy
-# import glob
-# import os
-
-
-# Generator and discrimintor from following repository: https://github.com/eriklindernoren/PyTorch-GAN
 class Generator(nn.Module):
     def __init__(self, args):
         super(Generator, self).__init__()
@@ -64,7 +47,6 @@ class Discriminator(nn.Module):
             *discriminator_block(64, 128),
         )
 
-        # The height and width of downsampled image
         self.ds_size = args.img_size // 2 ** 4
         self.adv_layer = nn.Sequential(nn.Linear(128 * self.ds_size ** 2, 1), nn.Sigmoid())
 
@@ -73,5 +55,4 @@ class Discriminator(nn.Module):
         out = out.view(out.shape[0], -1)
         validity = self.adv_layer(out)
         return validity
-
 
