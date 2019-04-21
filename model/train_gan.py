@@ -44,7 +44,7 @@ def weights_init_normal(m):
 def train(args):
     print("Starting training ...")
     epoch = 0
-    dataset = datasets.MRIImages(args.train_data_dir)
+    dataset = datasets.GANImages(args.train_data_dir)
     dataloader = DataLoader(dataset, batch_size=args.batch_size, shuffle=True)
 
     generator = models.Generator(args).cuda()

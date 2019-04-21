@@ -8,7 +8,7 @@ import numpy as np
 import glob
 import os
 
-class MRIImages(Dataset):
+class GANImages(Dataset):
     def __init__(self, directory, image_size=(96,96)):
         self.directory = directory
         self.images_filename = glob.glob(os.path.join(directory, "*.png"))
@@ -24,15 +24,15 @@ class MRIImages(Dataset):
         target_image = (target_image-np.mean(target_image))/np.max(np.abs(target_image))
         return torch.FloatTensor(target_image)
 
-def weighted_mask(mask,window_size):
-    assert len(mask.shape) == 2 
+def get_weighted_mask(mask,window_size):
+    assert len(mask.shape) == 3
     assert window_size % 2 == 1 # odd window size
     max_shift = window_size//2
     output = np.zeros_like(mask)
     for i in range(-max_shift,max_shift+1):
         for j in range(-max_shift,max_shift+1):
             if i != 0 or j != 0:
-                output += np.roll(mask, (i,j), axis=(0,1))
+                output += np.roll(mask, (i,j), axis=(1,2))
     output = 1 - output/(window_size**2-1)
     return output*mask
 
@@ -63,8 +63,11 @@ class RandomPatchDataset(Dataset):
         target_image = original_image.copy()
         target_image[0][1-mask > 0.5] = np.max(target_image)
 
-        # Weighted Mask
-        if self.weighted_mask: mask = weighted_mask(mask,self.window_size)
         mask = mask.reshape((1,)+mask.shape)
 
-        return torch.FloatTensor(target_image), torch.FloatTensor(mask), torch.FloatTensor(original_image)
+        # Weighted Mask
+        if self.weighted_mask: 
+            weighted_mask = get_weighted_mask(mask,self.window_size)
+            return torch.FloatTensor(target_image), torch.FloatTensor(original_image), torch.FloatTensor(mask), torch.FloatTensor(weighted_mask)
+        else:
+            return torch.FloatTensor(target_image), torch.FloatTensor(original_image), torch.FloatTensor(mask)

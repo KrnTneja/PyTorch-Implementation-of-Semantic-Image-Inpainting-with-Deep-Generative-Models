@@ -1,28 +1,42 @@
 # PyTorch-Implementation-of-Semantic-Image-Inpainting-with-Deep-Generative-Models
 
-PyTorch Implementation of Semantic Image Inpainting with Deep Generative Models (http://openaccess.thecvf.com/content_cvpr_2017/papers/Yeh_Semantic_Image_Inpainting_CVPR_2017_paper.pdf)
+PyTorch Implementation of <a href="http://openaccess.thecvf.com/content_cvpr_2017/papers/Yeh_Semantic_Image_Inpainting_CVPR_2017_paper.pdf">Semantic Image Inpainting with Deep Generative Models</a>.
 
 
-Details:
-1. 100-d input random vector
-2. DC GAN
-3. 64x64x3 image
-4. ADAM optimizer
-5. lambda = 0.003 (weight of prior)
-6. random horizontla flipping
-7. restrict z to [-1,1]
-8. 1500 iterations of backpropagation to the input
+### Details
+1. Latent space dimension: 100
+2. GAN model: DCGAN
+3. Image size: 64x64x3 (or 96x96x1)
+4. Optimizer: ADAM 
+5. lambda: 0.003 (Prior weight)
+6. Random horizontal flipping: not used
+7. Restrict z to [-1,1]: not used
+8. Iterations of backprop to input: 1500
+9. Poission Blending: Using gradient descent (3000 steps)
 
+## Required Packages
+* `pytorch`
+* `scikit-image`
+* `numpy`
+* CUDA
 
-TODO:
-1. (done) Implement GAN 
-2. (done) Prepare datasets
-3. (done) Loss function for GAN and training script 
-4. (done) Implement backprop to input 
-5. (done) Loss function for backprop to input 
-6. (done) Random patches dataset
-7. (done) Weighted mask
-8. Poisson blending
+## Training and Inpainting
 
+To train the DCGAN model, store all the images in `./data/`, go to `./model/` and run:
 
+```
+$ python train.py
+```
 
+To inpaint the images using backprop to input followed by Poission blending, store all the test images in `./test_images/`, go to `./model/` and run:
+
+```
+$ python inpaint.py
+```
+
+This will randomly create white patches in the image to corrput them and store `original`, `corrupted`, `output` and `blended` images in `./outputs/`.
+
+## TODO
+
+* CPU support
+* Examples
