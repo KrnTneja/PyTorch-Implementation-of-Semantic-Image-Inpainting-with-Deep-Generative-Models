@@ -40,3 +40,4 @@ This will randomly create white patches in the image to corrput them and store `
 
 * CPU support
 * Examples
+* Celebrity Dataset from <a href="https://www.microsoft.com/en-us/research/project/msra-cfw-data-set-of-celebrity-faces-on-the-web/">here</a>

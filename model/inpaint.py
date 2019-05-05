@@ -17,7 +17,7 @@ import datasets
 
 def get_arguments():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--batch-size", type=int, default=50)
+    parser.add_argument("--batch-size", type=int, default=20)
     parser.add_argument("--gan-path", type=str, default="./checkpoints/model.pth")
     parser.add_argument("--test-data-dir", type=str, default="../test_images/")
     parser.add_argument("--eval-only", action='store_true', default=False)
@@ -100,11 +100,11 @@ def inpaint(args):
 
         blended_images = posisson_blending(masks, generated_images.detach(), corrupted_images)
     
-        for img_id in range(args.batch_size):
-            save_image(corrupted_images[img_id], "../outputs/corrupted_{}_{}.png".format(i,img_id), normalize=True)
-            save_image(generated_images[img_id], "../outputs/output_{}_{}.png".format(i,img_id), normalize=True)
-            save_image(blended_images[img_id], "../outputs/blended_{}_{}.png".format(i,img_id), normalize=True)
-            save_image(original_images[img_id], "../outputs/original_{}_{}.png".format(i,img_id), normalize=True)
+        image_range = torch.min(corrupted_images), torch.max(corrupted_images)
+        save_image(corrupted_images, "../outputs/corrupted_{}.png".format(i), normalize=True, range=image_range, nrow=5)
+        save_image(generated_images, "../outputs/output_{}.png".format(i), normalize=True, range=image_range, nrow=5)
+        save_image(blended_images, "../outputs/blended_{}.png".format(i), normalize=True, range=image_range, nrow=5)
+        save_image(original_images, "../outputs/original_{}.png".format(i), normalize=True, range=image_range, nrow=5)
 
         del z_optimum, optimizer_inpaint
 
